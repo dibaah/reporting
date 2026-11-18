@@ -1,52 +1,34 @@
-# Prerequisites
-*.d
+# Secrets and local config
+.env
+*.env
+!.env.template
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# Real data: never commit reports, raw file store, backups or logs
+data/
+raw_store/
+backups/
+logs/
+*.xls
+*.xlsx
+*.xlsm
+*.xlsb
+*.dump
+*.sql.gz
 
-# Precompiled Headers
-*.gch
-*.pch
+# Node / .NET (later phases)
+node_modules/
+dist/
+bin/
+obj/
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Synthetic test samples are allowed (never put real reports here)
+!tests/samples/*.xls
+!tests/samples/*.xlsx
+!tests/samples/*.xlsm
+!tests/samples/*.xlsb
