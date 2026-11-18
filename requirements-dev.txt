@@ -1,0 +1,2 @@
+-r requirements.txt
+xlwt>=1.3   # only to regenerate the synthetic .xls test samples (tests/make_samples.py)

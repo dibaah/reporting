@@ -1,0 +1,93 @@
+{
+  "header": {
+    "superintendent": "B. Example"
+  },
+  "lines": [
+    {
+      "extra": null,
+      "label": "K-201",
+      "line_no": 1,
+      "numeric_value": 41.2,
+      "section": "06:00:00",
+      "text": "Discharge pressure",
+      "unit": "bar"
+    },
+    {
+      "extra": null,
+      "label": "K-201",
+      "line_no": 2,
+      "numeric_value": 3.1,
+      "section": "06:00:00",
+      "text": "Vibration",
+      "unit": "mm/s"
+    },
+    {
+      "extra": {
+        "reading": "Running"
+      },
+      "label": "P-310",
+      "line_no": 3,
+      "numeric_value": null,
+      "section": "09:30:00",
+      "text": "Status",
+      "unit": null
+    },
+    {
+      "extra": null,
+      "label": "Flare",
+      "line_no": 4,
+      "numeric_value": null,
+      "section": "12:00:00",
+      "text": "Observation",
+      "unit": null
+    },
+    {
+      "extra": null,
+      "label": "T-100",
+      "line_no": 5,
+      "numeric_value": 78,
+      "section": "15:00:00",
+      "text": "Level",
+      "unit": "%"
+    },
+    {
+      "extra": {
+        "reading": "High vibration alarm cleared"
+      },
+      "label": "K-201",
+      "line_no": 6,
+      "numeric_value": null,
+      "section": "17:45:00",
+      "text": "Alarm",
+      "unit": null
+    }
+  ],
+  "metrics": [
+    {
+      "equipment": "K-201",
+      "measured_at": "2024-03-10T06:00:00",
+      "metric": "Discharge pressure",
+      "unit": "bar",
+      "value": 41.2
+    },
+    {
+      "equipment": "K-201",
+      "measured_at": "2024-03-10T06:00:00",
+      "metric": "Vibration",
+      "unit": "mm/s",
+      "value": 3.1
+    },
+    {
+      "equipment": "T-100",
+      "measured_at": "2024-03-10T15:00:00",
+      "metric": "Level",
+      "unit": "%",
+      "value": 78
+    }
+  ],
+  "report_date": "2024-03-10",
+  "report_type": "12H",
+  "shift": "Night",
+  "template_name": "example_12h_modern",
+  "warnings": []
+}

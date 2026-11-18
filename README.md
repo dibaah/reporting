@@ -7,6 +7,23 @@ Runs natively on Windows, no Docker. See the Master Plan v3 for all phases.
 ## Phase 1: Foundation (this state)
 PostgreSQL schema (13 tables), Alembic migration, seed data, shared Python DB layer, tests.
 
+## Phase 2: Parser engine (this state)
+`parser_engine/` turns any report workbook into the standard structure (header, lines, metrics,
+warnings) and saves it to the database. The engine is generic; **real templates are added after
+Phase 0 discovery** (see `docs/adding_a_template.md`). Until then, real files fail cleanly with
+`no_template_match` and their raw cells are saved.
+
+- Reads `.xlsx`, `.xlsm`, `.xls`, `.xlsb`. Format is detected from the file content, not the extension.
+- LibreOffice (optional, free) is used as a fallback for odd HTML/XML "Excel" files and damaged
+  workbooks. Install it on the server if you have old archives; the engine finds `soffice` automatically.
+- Handles merged cells, hidden sheets, several sheets per file and mixed date formats.
+- Nothing is silently dropped: failures go to `failed_parse_queue` (reasons: `unreadable_file`,
+  `password_protected`, `unsupported_format`, `no_template_match`, `parser_error`,
+  `validation_failed`, `unknown_report_type`) and raw cells are always stored.
+
+Inspect any file without a database:
+`python -m parser_engine.cli --rows 30 path\to\report.xls`
+
 ### Setup on Windows
 1. Install PostgreSQL 16 (include command line tools) and Python 3.12 (tick "Add to PATH").
 2. `.\deploy\create_database.ps1`  creates the database, two roles, and writes `.env`.

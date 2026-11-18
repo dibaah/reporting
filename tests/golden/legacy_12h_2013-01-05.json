@@ -1,0 +1,179 @@
+{
+  "header": {
+    "superintendent": "A. Example"
+  },
+  "lines": [
+    {
+      "extra": null,
+      "label": "K-101",
+      "line_no": 1,
+      "numeric_value": 4.2,
+      "section": "Compressors",
+      "text": "Vibration normal",
+      "unit": "mm/s"
+    },
+    {
+      "extra": null,
+      "label": "K-102",
+      "line_no": 2,
+      "numeric_value": 5.1,
+      "section": "Compressors",
+      "text": "Vibration slightly high",
+      "unit": "mm/s"
+    },
+    {
+      "extra": null,
+      "label": "K-103",
+      "line_no": 3,
+      "numeric_value": 3.9,
+      "section": "Compressors",
+      "text": null,
+      "unit": "mm/s"
+    },
+    {
+      "extra": {
+        "reading": "STANDBY"
+      },
+      "label": "K-104",
+      "line_no": 4,
+      "numeric_value": null,
+      "section": "Compressors",
+      "text": "Held in standby",
+      "unit": null
+    },
+    {
+      "extra": null,
+      "label": "P-201",
+      "line_no": 5,
+      "numeric_value": 62.5,
+      "section": "Pumps",
+      "text": "Lube oil pressure OK",
+      "unit": "psi"
+    },
+    {
+      "extra": null,
+      "label": "P-202",
+      "line_no": 6,
+      "numeric_value": 58,
+      "section": "Pumps",
+      "text": null,
+      "unit": "psi"
+    },
+    {
+      "extra": null,
+      "label": "P-203",
+      "line_no": 7,
+      "numeric_value": 0,
+      "section": "Pumps",
+      "text": "Out of service for seal replacement",
+      "unit": "psi"
+    },
+    {
+      "extra": null,
+      "label": "Permits",
+      "line_no": 8,
+      "numeric_value": 3,
+      "section": "Safety",
+      "text": "3 hot work permits open",
+      "unit": null
+    },
+    {
+      "extra": {
+        "reading": "OK"
+      },
+      "label": "Gas detectors",
+      "line_no": 9,
+      "numeric_value": null,
+      "section": "Safety",
+      "text": "No leak detected",
+      "unit": null
+    },
+    {
+      "extra": {
+        "reading": "OK"
+      },
+      "label": "Flare",
+      "line_no": 10,
+      "numeric_value": null,
+      "section": "Safety",
+      "text": "Pilot lit",
+      "unit": null
+    },
+    {
+      "extra": null,
+      "label": "Handover",
+      "line_no": 11,
+      "numeric_value": null,
+      "section": "Remarks",
+      "text": "Compressor K-102 to be inspected on day shift",
+      "unit": null
+    },
+    {
+      "extra": null,
+      "label": "Downtime",
+      "line_no": 12,
+      "numeric_value": 1.5,
+      "section": "Remarks",
+      "text": "Planned downtime on train B",
+      "unit": "h"
+    }
+  ],
+  "metrics": [
+    {
+      "equipment": "K-101",
+      "measured_at": null,
+      "metric": "reading",
+      "unit": "mm/s",
+      "value": 4.2
+    },
+    {
+      "equipment": "K-102",
+      "measured_at": null,
+      "metric": "reading",
+      "unit": "mm/s",
+      "value": 5.1
+    },
+    {
+      "equipment": "K-103",
+      "measured_at": null,
+      "metric": "reading",
+      "unit": "mm/s",
+      "value": 3.9
+    },
+    {
+      "equipment": "P-201",
+      "measured_at": null,
+      "metric": "reading",
+      "unit": "psi",
+      "value": 62.5
+    },
+    {
+      "equipment": "P-202",
+      "measured_at": null,
+      "metric": "reading",
+      "unit": "psi",
+      "value": 58
+    },
+    {
+      "equipment": "P-203",
+      "measured_at": null,
+      "metric": "reading",
+      "unit": "psi",
+      "value": 0
+    },
+    {
+      "equipment": "Downtime",
+      "measured_at": null,
+      "metric": "reading",
+      "unit": "h",
+      "value": 1.5
+    }
+  ],
+  "report_date": "2013-01-05",
+  "report_type": "12H",
+  "shift": "Day",
+  "template_name": "example_12h_legacy",
+  "warnings": [
+    "report date is ambiguous (day/month order assumed day-first)"
+  ]
+}
