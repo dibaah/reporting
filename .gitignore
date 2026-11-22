@@ -32,3 +32,7 @@ obj/
 !tests/samples/*.xlsx
 !tests/samples/*.xlsm
 !tests/samples/*.xlsb
+
+# Phase 0 / Phase 3 outputs contain real report text and paths: never commit
+inventory_out/
+dryrun*.csv

@@ -150,7 +150,10 @@ def detect_format(path: Path) -> str:
 def _read_xlsx(path: Path) -> list[Sheet]:
     import openpyxl
 
-    wb = openpyxl.load_workbook(path, data_only=True, keep_vba=False)
+    # Pass an open file, not the path: openpyxl otherwise rejects any file NAMED .xls, even when
+    # the content is a valid .xlsx (old archives contain such misnamed files).
+    with open(path, "rb") as fh:
+        wb = openpyxl.load_workbook(fh, data_only=True, keep_vba=False)
     sheets: list[Sheet] = []
     for i, ws in enumerate(wb.worksheets):
         rows: list[list[Any]] = []
@@ -276,7 +279,7 @@ def _classify_error(exc: Exception) -> WorkbookError:
     return WorkbookError(REASON_UNREADABLE, f"{type(exc).__name__}: {msg}")
 
 
-def load_workbook(path: str | Path) -> Workbook:
+def load_workbook(path: str | Path, allow_libreoffice: bool = True) -> Workbook:
     path = Path(path)
     if not path.is_file():
         raise WorkbookError(REASON_UNREADABLE, f"file not found: {path}")
@@ -302,7 +305,7 @@ def load_workbook(path: str | Path) -> Workbook:
 
     # LibreOffice only for real Excel/HTML/XML content. Plain text and random bytes must NOT be
     # "converted": LibreOffice would import them as a one-column text sheet and hide the damage.
-    if error.reason == REASON_PASSWORD or fmt not in {"ole2", "xlsx", "xlsb", "xml_or_html"}:
+    if not allow_libreoffice or error.reason == REASON_PASSWORD or fmt not in {"ole2", "xlsx", "xlsb", "xml_or_html"}:
         raise error
     converted = _convert_with_libreoffice(path)
     if converted is not None:

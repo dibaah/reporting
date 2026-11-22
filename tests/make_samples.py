@@ -9,7 +9,6 @@ import zipfile
 from pathlib import Path
 
 import openpyxl
-import xlwt
 
 OUT = Path(__file__).parent / "samples"
 
@@ -30,6 +29,8 @@ LEGACY_ROWS = [  # section, item, reading, unit, remarks
 
 
 def make_legacy(path: Path, date_text: str | None = "05/01/2013") -> None:
+    import xlwt  # dev dependency (requirements-dev.txt), only needed to regenerate .xls samples
+
     wb = xlwt.Workbook()
     ws = wb.add_sheet("Daily Report")
     ws.write(0, 0, "12 HOUR OPERATIONS REPORT")

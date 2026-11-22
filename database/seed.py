@@ -20,6 +20,7 @@ DEFAULT_SETTINGS = {
     "live_import_interval_minutes": ("5", "How often Outlook is checked"),
     "keyword_check_interval_minutes": ("5", "How often new reports are scanned; also daily digest time source"),
     "alerts_active_from": ("", "Forward-only cutoff; stamped when alerts are first enabled"),
+    "historical_import_control": ("run", "run | pause | stop: read by the historical importer between files"),
     "backup_location": ("", "Folder or network share for backups"),
     "backup_interval_minutes": ("1440", "How often to back up (1440 = daily)"),
     "backup_retention_count": ("14", "How many backups to keep"),

@@ -24,6 +24,40 @@ Phase 0 discovery** (see `docs/adding_a_template.md`). Until then, real files fa
 Inspect any file without a database:
 `python -m parser_engine.cli --rows 30 path\to\report.xls`
 
+## Phase 3: Historical importer (this state)
+Loads the archive (2013 to today) into the database. Safe to stop with Ctrl+C and to run again:
+every file is identified by its SHA-256 hash, so finished files are skipped and nothing is
+duplicated. One database transaction per file; a bad file never stops the run. This importer
+never creates alerts.
+
+Use the virtual environment (`.\.venv\Scripts\python` on Windows). Recommended order:
+
+1. **Look first (Phase 0), no database needed**
+   `python -m ingestion_engine.inventory "D:\reports" --out inventory_out`
+   Open `inventory_out\layouts.csv` in Excel: one row per layout, with file counts, years and example files.
+2. **Write one template per layout** (see `docs/adding_a_template.md`), using
+   `python -m parser_engine.cli --rows 40 "<example file>"`.
+3. **Rehearse**: `python -m ingestion_engine.historical --root "D:\reports" --dry-run --csv dryrun.csv`
+   Parses everything and writes nothing. The CSV shows, per file, what would happen.
+4. **Import**: `python -m ingestion_engine.historical --root "D:\reports"`
+   Try `--limit 100` first. Progress prints every 50 files; the result is also stored in `job_runs`.
+5. **Fix failures**: `python -m ingestion_engine.historical --list-failed` groups them by reason with
+   example paths. After adding a template: `python -m ingestion_engine.historical --reparse-failed`.
+6. **Build the trigram indexes once the import is complete** (as `report_owner`):
+   `psql -U report_owner -d report_intel -f database/sql/post_import_indexes.sql`
+
+Pause, resume or stop a running import from a second window:
+`python -m ingestion_engine.historical --set-control pause` (or `run`, `stop`).
+The same setting (`historical_import_control` in `app_settings`) will be wired to the Settings screen.
+
+Notes
+- The archive folder can also be set once as `historical_archive_root` in `app_settings`; then `--root` is optional.
+- Dates come from the report content. If a report's date does not match its folder (year or month),
+  it is counted as an informational "folder mismatch"; it is still imported.
+- Identical files in several folders are imported once and counted as duplicates.
+- A file that cannot be read from disk (locked, permission) is counted as an error and retried on the next run.
+- Inventory and dry-run CSV files contain real report text and paths: never commit them.
+
 ### Setup on Windows
 1. Install PostgreSQL 16 (include command line tools) and Python 3.12 (tick "Add to PATH").
 2. `.\deploy\create_database.ps1`  creates the database, two roles, and writes `.env`.

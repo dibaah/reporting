@@ -62,12 +62,15 @@ def test_date_comes_from_content_and_ambiguity_is_flagged():
     assert any("ambiguous" in w for w in rep.warnings)
 
 
-def test_wrong_extension_is_read_by_content():
+def test_wrong_extension_is_read_by_content(monkeypatch):
+    # must work WITHOUT LibreOffice: it is optional on the server
+    monkeypatch.setattr("parser_engine.workbook._convert_with_libreoffice", lambda p: None)
     path = SAMPLES / "misnamed_modern.xls"
     assert detect_format(path) == "xlsx"
     out = parse_file(path, REG)
     assert out.ok and out.template_name == "example_12h_modern"
     assert any("does not match content" in w for w in out.warnings)
+    assert not any("LibreOffice" in w for w in out.warnings)
 
 
 def test_hidden_sheet_is_kept_in_raw_but_ignored_by_template():
