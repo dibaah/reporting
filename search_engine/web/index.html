@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Report Intelligence</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="chip">RI</span><span class="brand-title">Report Intelligence</span></div>
+    <div class="topbar-actions">
+      <button id="themeBtn" class="icon-btn" title="Dark / light mode" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+  <nav class="menu" id="menu">
+    <a href="#/search" data-route="search">Search</a>
+    <a href="#/reports" data-route="reports">Reports</a>
+    <span class="disabled" title="Coming in a later phase">Alerts</span>
+    <span class="disabled" title="Coming in a later phase">Settings</span>
+  </nav>
+
+  <main>
+    <div class="page-head"><h1 id="pageTitle">REPORT SEARCH</h1><span class="muted" id="coverage"></span></div>
+    <section class="cards" id="cards"></section>
+
+    <section class="panel filters" id="filters">
+      <div class="field grow" id="qField">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder='Search keywords, equipment tags ("K-101"), "exact phrase", -exclude   ( press / )' autocomplete="off">
+      </div>
+      <select id="type" title="Report type"><option value="">All report types</option></select>
+      <input id="from" type="date" title="From date">
+      <input id="to" type="date" title="To date">
+      <input id="equipment" class="narrow" placeholder="Equipment contains…">
+      <label class="check" id="partialWrap" title="Match parts of words and tolerate typos"><input id="partial" type="checkbox"> Partial / typos</label>
+      <button id="go" class="btn primary">Filter</button>
+      <button id="clear" class="btn">Clear</button>
+    </section>
+
+    <section class="panel results">
+      <div id="status" class="status"></div>
+      <div class="table-wrap"><table id="table"><thead></thead><tbody></tbody></table></div>
+      <div class="pager"><button id="prev" class="btn" disabled>Previous</button><span id="pageInfo" class="muted"></span><button id="next" class="btn" disabled>Next</button></div>
+    </section>
+  </main>
+
+  <div id="overlay" class="overlay" hidden></div>
+  <aside id="drawer" class="drawer" hidden aria-label="Report">
+    <div class="drawer-head"><div><div id="dTitle" class="drawer-title"></div><div id="dSub" class="muted"></div></div><button id="dClose" class="icon-btn" aria-label="Close">✕</button></div>
+    <div id="dHeader" class="kv"></div>
+    <div class="table-wrap drawer-body"><table id="dTable"><thead><tr><th>#</th><th>Section</th><th>Item</th><th>Remarks</th><th>Value</th><th>Unit</th></tr></thead><tbody></tbody></table></div>
+  </aside>
+  <script src="/static/app.js"></script>
+</body>
+</html>

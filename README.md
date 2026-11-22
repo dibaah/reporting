@@ -58,6 +58,45 @@ Notes
 - A file that cannot be read from disk (locked, permission) is counted as an error and retried on the next run.
 - Inventory and dry-run CSV files contain real report text and paths: never commit them.
 
+## Phase 4: Keyword search (this state)
+Search over all imported reports, from the command line, from a JSON API and from a preview web page.
+Search runs inside PostgreSQL (function `search_report_lines`, migration 0002), so the future
+.NET Report plugin gets exactly the same results.
+
+Apply the new migration first: `.\deploy\setup.ps1` (or `alembic upgrade head`).
+
+**Command line**
+```
+python -m search_engine.cli "vibration K-101"
+python -m search_engine.cli "leak" --type 12H --from 2024-01-01 --to 2024-12-31 --context 2
+python -m search_engine.cli "compres" --partial          # parts of words and typos
+python -m search_engine.cli "\"no leak\" -detector"      # exact phrase, exclusion
+```
+
+**Preview web page** (no build step): `python -m search_engine.api` then open http://127.0.0.1:8080
+Search page with filters (type, dates, equipment), highlighted hits and a side panel showing the
+whole report with every line in its own row; Reports page to browse by type and date; summary
+cards; dark/light mode; press `/` to jump to the search box. It has no login and listens on this
+computer only. It is a preview of the Report plugin, not the final dashboard
+(see `docs/plugin_architecture.md`).
+
+| You type | It finds |
+|---|---|
+| `K-101` | the tag K-101 (not K-102) |
+| `vibration high` | lines with both words |
+| `"no leak detected"` | the exact phrase |
+| `leak -detector` | leak, but not lines with detector |
+| `standby OR overhaul` | either word |
+| `101` + **Partial / typos** | any text containing 101, and near spellings (`vibraton`) |
+
+Notes
+- Normal search matches whole words and tags. `101` alone does not find `K-101`; tick **Partial / typos** (`--partial`) for that.
+- Results are newest first within the same relevance. Blank query + filters browses by date.
+- The first search on millions of lines is fast with the default index; Partial mode becomes fast
+  after you build the trigram indexes (`database/sql/post_import_indexes.sql`, see Phase 3).
+- The tests write to the database in `.env`. Once real data is loaded, point `.env` at a separate
+  test database (for example `report_intel_test`) before running `pytest`.
+
 ### Setup on Windows
 1. Install PostgreSQL 16 (include command line tools) and Python 3.12 (tick "Add to PATH").
 2. `.\deploy\create_database.ps1`  creates the database, two roles, and writes `.env`.
