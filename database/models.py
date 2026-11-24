@@ -24,6 +24,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     func,
+    text,
 )
 from sqlalchemy.dialects.postgresql import JSONB, TSVECTOR
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
@@ -88,6 +89,7 @@ class SourceFile(Base):
     status: Mapped[str] = mapped_column(String(10), server_default="pending")
     received_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     ingested_at: Mapped[datetime] = _ts()
+    alert_scanned_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     __table_args__ = (
         CheckConstraint("origin IN ('archive','outlook')", name="ck_source_files_origin"),
@@ -95,6 +97,8 @@ class SourceFile(Base):
             "status IN ('pending','parsed','failed','skipped')", name="ck_source_files_status"
         ),
         Index("ix_source_files_origin_received", "origin", "received_at"),
+        Index("ix_source_files_alert_pending", "received_at",
+              postgresql_where=text("origin = 'outlook' AND alert_scanned_at IS NULL")),
     )
 
 
@@ -200,6 +204,7 @@ class FailedParseQueue(Base):
     resolved: Mapped[bool] = mapped_column(Boolean, server_default="false")
     created_at: Mapped[datetime] = _ts()
     last_attempt_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    notified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     __table_args__ = (Index("ix_failed_parse_unresolved", "resolved"),)
 
@@ -243,10 +248,13 @@ class AlertEvent(Base):
     sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     acknowledged_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     action_note: Mapped[str | None] = mapped_column(Text)
+    repeat_key: Mapped[str | None] = mapped_column(String(64))
+    repeat_count: Mapped[int] = mapped_column(Integer, server_default="0")
 
     __table_args__ = (
         CheckConstraint("status IN ('new','sent','acknowledged')", name="ck_alert_status"),
         Index("ix_alert_events_status", "status", "created_at"),
+        Index("ix_alert_events_repeat", "rule_id", "repeat_key", "created_at"),
     )
 
 

@@ -17,7 +17,8 @@ def query_terms(query: str | None) -> list[str]:
             terms.add(phrase.strip())
         elif word and not word.startswith("-") and word.lower() != "or":
             terms.add(word.strip('"'))
-    return sorted((t for t in terms if t), key=len, reverse=True)  # longest first: phrases win
+    # longest first so phrases win; ties in alphabetical order so the result is always the same
+    return sorted((t for t in terms if t), key=lambda t: (-len(t), t.lower()))
 
 
 def highlight_html(text: str | None, terms: list[str]) -> str:

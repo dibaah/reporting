@@ -97,6 +97,75 @@ Notes
 - The tests write to the database in `.env`. Once real data is loaded, point `.env` at a separate
   test database (for example `report_intel_test`) before running `pytest`.
 
+## Phase 5: Outlook live importer (this state)
+New reports that arrive in your Outlook folder are imported by themselves. The mailbox is only **read**,
+never changed: "already processed" is tracked in the database (file hash and mail id), so the same
+mail or file can never be imported twice, and the importer can be stopped and started at any time.
+
+Choose the way to read Outlook in `.env` (`MAIL_SOURCE`) and set the folder with
+`python -m alert_service.cli setting set outlook_folder "Inbox/Reports"`:
+
+| MAIL_SOURCE | What it needs | Notes |
+|---|---|---|
+| `graph` | An app registration made by IT: **application** permission `Mail.Read`, admin consent, ideally limited to this one mailbox (Exchange application access policy). Put `GRAPH_TENANT_ID`, `GRAPH_CLIENT_ID`, `GRAPH_CLIENT_SECRET`, `GRAPH_MAILBOX` in `.env` | Best for a server. The client secret expires: note the date |
+| `outlook` | Desktop Outlook installed and signed in, `pip install pywin32` | **Run as a scheduled task "At log on" in your own session, not as a Windows service** (Outlook does not work from services) |
+| `eml` | `EML_FOLDER` = a folder of `.eml` files | For testing or when IT exports mail for you |
+
+Run it: `python -m ingestion_engine.live` (keeps running; interval = setting `live_import_interval_minutes`)
+or `python -m ingestion_engine.live --once` (for Task Scheduler). Useful settings (`python -m alert_service.cli setting list`):
+`outlook_folder`, `live_import_interval_minutes`, `live_import_since` (ignore older mail on the first run).
+
+What it does per attachment: skips non-Excel files, skips content it already knows, keeps the original in
+`RAW_STORE_PATH` (outside the repo, `outlook\YYYY\MM\`), parses it, saves it. A file that cannot be parsed
+is saved to `failed_parse_queue`; its text is still searched for keywords (Phase 6). Temporary mailbox
+problems are retried with back-off; a wrong folder or missing permission is reported clearly in the log.
+The report type comes from the matching template (file content), not from the email subject.
+
+**Not yet tried against a real mailbox:** the Microsoft Graph and desktop Outlook readers are tested with
+simulated servers and objects only. Try `--once` first and read the log.
+
+## Phase 6: Alerts (this state)
+Keyword alerts for **new Outlook reports only**, a daily digest, warnings about unreadable files, and
+warnings about reports that did not arrive. Nothing is sent until you switch alerts on.
+
+Quick start:
+```
+python -m alert_service.cli setting set notification_email "me@company.com"      # who gets mail
+#   put SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_FROM in .env (TEAMS_WEBHOOK_URL is optional)
+python -m alert_service.cli test-notify                                        # does email work?
+python -m alert_service.cli keyword add "leak" --severity critical --channel both
+python -m alert_service.cli keyword add "vibration" --severity warning
+python -m alert_service.cli preview "leak" --severity warning --from 2024-01-01 # try it on history, sends nothing
+python -m alert_service.cli schedule set 12H --times 06:30,18:30 --tz Asia/Tehran   # when reports should arrive
+python -m alert_service.cli enable                                             # alerts start NOW
+python -m alert_service.service                                                # keep running (or --once)
+python -m alert_service.cli alerts list --status new
+python -m alert_service.cli ack 12 --note "K-102 inspected, bearing replaced"
+```
+
+| Severity | What happens |
+|---|---|
+| critical | Sent at once, one message per report. Negation is **never** ignored ("no leak detected" still alerts: a false alarm is better than a missed one; the message shows the lines around the hit) |
+| warning | Collected into one **daily digest** at `daily_digest_time`. Simple negation ("no leak detected", "leak: none") is ignored |
+| info | Recorded only, never sent. Visible with `alerts list --severity info` |
+
+Rules worth knowing
+- **Forward-only.** `enable` stamps the start time. Mail received before it, and everything from the historical import, never creates alerts. `disable` pauses; `enable` continues from the same start (mail that arrived meanwhile is checked), `enable --restart` starts from now.
+- **Keywords match whole words**, any case. `leak` does not match `leakage`; use a regex such as `leak(s|age|ing)?` (`--match regex`). Tags work: `K-101` does not match `K-1010`.
+- A keyword added later only applies to mail that arrives later.
+- **Nothing depends on the parser:** if a report could not be parsed, its text cells are scanned instead, and you also get one "could not be parsed" warning per file.
+- **Repeats are annotated, not silenced:** the same finding in later reports is still sent, marked "seen 3x before in the last 7 days".
+- Delivery that fails (SMTP down) is retried every cycle; an alert counts as delivered when at least one of its channels worked.
+- **Missing reports:** after `schedule set`, each expected arrival with no report after `missing_report_grace_minutes` produces one warning. A late report still fills its slot. Biweekly: `schedule set Biweekly --every-days 14 --anchor 2026-01-05 --time 08:00`; monthly: `--monthly-day 1`.
+- Settings are checked: `python -m alert_service.cli setting set timezone Asia/Tehran` (Windows needs the `tzdata` package, which is in `requirements.txt`).
+
+Run both workers as scheduled tasks (Task Scheduler: *Create Task*, trigger *At startup*, or *At log on* when using desktop Outlook;
+action: `.venv\Scripts\python.exe -m ingestion_engine.live`, start in the repository folder). Tested installers come with Phase 9.
+
+### Tests on a separate database (recommended once real data is loaded)
+`psql -U postgres -f database/sql/create_test_database.sql`, then follow the comments in that file. With
+`TEST_DATABASE_URL` set, every test uses that database, so real reports, keywords and alerts are never touched.
+
 ### Setup on Windows
 1. Install PostgreSQL 16 (include command line tools) and Python 3.12 (tick "Add to PATH").
 2. `.\deploy\create_database.ps1`  creates the database, two roles, and writes `.env`.

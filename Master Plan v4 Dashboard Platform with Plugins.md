@@ -69,16 +69,16 @@ Not the focus now. Only the shape is fixed here so earlier phases leave room for
 | # | Requirement | Status |
 | --- | --- | --- |
 | R1 | Import historical Excel reports from 2013 onward, any format and layout | engine done, real layouts pending |
-| R2 | Import new reports automatically from a dedicated Outlook folder | Phase 5 |
+| R2 | Import new reports automatically from a dedicated Outlook folder | done (Phase 5), needs your Outlook access setup |
 | R3 | 12H, biweekly, monthly reports; easy to add types | engine done |
 | R4 | Keyword search across all reports | done (Phase 4) |
-| R5 | Keyword notifications for new reports only | Phase 6 |
+| R5 | Keyword notifications for new reports only | done (Phase 6) |
 | R6 | Dashboard: choose report type, every report line in its own row | preview done, final UI in Phase 8 |
 | R7 | Settings screen (folders, intervals, keywords, backup) | Phase 8 |
 | R8 | Dark and light mode | preview done |
 | R9 | Plug into the company .NET dashboard | Phase 7 and 8 |
 | R10 | Runs internally without Docker | yes |
-| R11 | Alerts can be acknowledged with a note | Phase 6 and 8 |
+| R11 | Alerts can be acknowledged with a note | command line done (Phase 6), screen in Phase 8 |
 | R12 | Dashboard host with plugins (Report, FCR, more later) | Phase 7 |
 | R13 | Departments, roles and permissions defined in the host | Phase 10 |
 | R14 | Approvals and signatures for plugins that need them (FCR yes, Report no) | Phase 11 |
@@ -95,8 +95,8 @@ Not the focus now. Only the shape is fixed here so earlier phases leave room for
 | 2 | Parser engine for .xls, .xlsx, .xlsm, .xlsb and the template system | done, real templates wait for Phase 0 results |
 | 3 | Historical importer with dry run, resume, failed queue | done |
 | 4 | Keyword search (database function, CLI, API, preview page) | done |
-| 5 | Outlook live importer (Graph or desktop Outlook), forward-only import marker | **next** |
-| 6 | Keyword alerts, missing-report detection, daily digest, action notes | planned |
+| 5 | Outlook live importer (Graph, desktop Outlook, or a folder of .eml files) | done, not yet tried against your real mailbox |
+| 6 | Keyword alerts, missing-report detection, daily digest, action notes | done, not yet tried with your real SMTP server |
 
 Details of Phases 0 to 6 are as in Master Plan v3 (rules: alerts only for new Outlook reports, idempotent imports by file hash, nothing silently dropped, secrets in environment files, dates from report content).
 
