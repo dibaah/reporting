@@ -10,6 +10,7 @@ import datetime as dt
 import shutil
 import subprocess
 import tempfile
+import warnings
 import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -152,7 +153,9 @@ def _read_xlsx(path: Path) -> list[Sheet]:
 
     # Pass an open file, not the path: openpyxl otherwise rejects any file NAMED .xls, even when
     # the content is a valid .xlsx (old archives contain such misnamed files).
-    with open(path, "rb") as fh:
+    with open(path, "rb") as fh, warnings.catch_warnings():
+        # harmless notices about logos (.wmf images) and print areas: they do not affect cell text
+        warnings.filterwarnings("ignore", category=UserWarning, module=r"openpyxl\..*")
         wb = openpyxl.load_workbook(fh, data_only=True, keep_vba=False)
     sheets: list[Sheet] = []
     for i, ws in enumerate(wb.worksheets):

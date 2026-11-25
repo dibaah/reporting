@@ -72,6 +72,10 @@ def folder_hint(path: Path, root: Path) -> tuple[int | None, int | None]:
     parts = [root.name, *path.relative_to(root).parts[:-1]]
     year = month = None
     for part in parts:
+        ym = re.fullmatch(r"((?:19|20)\d{2})[-_. ]?(0[1-9]|1[0-2])", part.strip())  # 2019-01, 2019_01, 201901
+        if ym:
+            year, month = (year or int(ym.group(1))), (month or int(ym.group(2)))
+            continue
         if year is None and re.fullmatch(r"(19|20)\d{2}", part.strip()):
             year = int(part)
             continue

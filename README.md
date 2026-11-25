@@ -166,6 +166,32 @@ action: `.venv\Scripts\python.exe -m ingestion_engine.live`, start in the reposi
 `psql -U postgres -f database/sql/create_test_database.sql`, then follow the comments in that file. With
 `TEST_DATABASE_URL` set, every test uses that database, so real reports, keywords and alerts are never touched.
 
+## Real template: CTEP Shift Report (your Day / Night shift reports)
+`parser_engine/templates/ctep_shift_report.py` reads the shift reports in `01-Daily Reports\Shift Report (CWRS)`
+(files `CWRS-YYYYMMDD[D|N].xlsx` and `CSR-YYYYMMDD[D|N].xlsx`, month folders such as `2019-01`). One template covers
+all the 2019 layouts seen so far (with or without the Highlight / WR Status / Associated WR/WO columns).
+The report type is `12H` (two 12-hour shifts a day).
+
+What you get per report
+- **Header:** date, shift (Day/Night), duty/supervisor, crew, document number, CCR and site members.
+- **Lines**, one per row of the form (section = production area, item, status/remarks, readings as numbers):
+  Wells & MFs, Oil Treatment, Gas Treatment, Utility Systems, GTG & Power Plant, Storage Tank Level, Shut down, Crew, Remark.
+- **Activity Report split into its numbered items**, each its own searchable line (with its area, the areas the
+  merged cell covers, and the WR/WO entry that belongs to that item).
+- **Metrics** for trends: injection pressure and flow, separator pressure, flare drain volumes, tank levels, LC/HC export rates.
+- Fixed form labels with nothing reported are not stored (otherwise a keyword like "flare" would match every report).
+
+Date and shift come from the report; when the document number or the **file name** disagrees (some files still carry last
+year's date in the header, e.g. a 2019 file saying `04.Feb.2018`) the file name wins and a note is saved with the report
+(stored in the report's header under `_parser.warnings`, and shown in the report viewer).
+
+Check it on your own machine without a database: `python -m parser_engine.cli --rows 5 "<file>.xlsx"` shows the match; the
+full line-by-line result: `python -m parser_engine.cli --json "<file>.xlsx"`.
+
+**Real files in the tests.** Put copies of real reports in `tests/real_samples\` (git-ignored) and `pytest` also checks them.
+**This repository is public: never commit real reports** (they contain names and production figures). Make the repository
+private on GitHub (Settings > General > Danger Zone > Change visibility) if you want to keep operational data out of public view.
+
 ### Setup on Windows
 1. Install PostgreSQL 16 (include command line tools) and Python 3.12 (tick "Add to PATH").
 2. `.\deploy\create_database.ps1`  creates the database, two roles, and writes `.env`.

@@ -36,3 +36,6 @@ obj/
 # Phase 0 / Phase 3 outputs contain real report text and paths: never commit
 inventory_out/
 dryrun*.csv
+
+# Real report files used for local checks only (the repository is public)
+tests/real_samples/

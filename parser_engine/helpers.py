@@ -46,6 +46,7 @@ _DATE_FORMATS_ISO = ["%Y-%m-%d", "%Y/%m/%d", "%Y.%m.%d"]
 _DATE_FORMATS_NAMED = [
     "%d-%b-%Y", "%d-%b-%y", "%d %b %Y", "%d %B %Y", "%d %b %y",
     "%b %d, %Y", "%B %d, %Y", "%b %d %Y", "%B %d %Y", "%d-%B-%Y",
+    "%d.%b.%Y", "%d.%B.%Y", "%d.%b.%y", "%Y-%b-%d", "%Y-%B-%d", "%Y.%b.%d",   # 19.Jan.2019, 2019-May-04
 ]
 _DATE_FORMATS_DAYFIRST = ["%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y", "%d/%m/%y", "%d-%m-%y", "%d.%m.%y"]
 _DATE_FORMATS_MONTHFIRST = ["%m/%d/%Y", "%m-%d-%Y", "%m/%d/%y", "%m-%d-%y"]

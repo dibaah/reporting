@@ -1,0 +1,657 @@
+{
+  "header": {
+    "basis": null,
+    "ccr_members": "A.One / B.Two / C.Three",
+    "crew": null,
+    "date_text": "07.Jan.2098",
+    "doc_no": null,
+    "duty": "B. Tester",
+    "report_title": "CTEP Shift Report",
+    "section": null,
+    "site_members": "D.Four / E.Five",
+    "supervisor": "B. Tester"
+  },
+  "lines": [
+    {
+      "extra": {
+        "row": 4
+      },
+      "label": "Wells in service",
+      "line_no": 1,
+      "numeric_value": null,
+      "section": "Wells & MFs",
+      "text": "Highlights",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 5
+      },
+      "label": "HC No",
+      "line_no": 2,
+      "numeric_value": 25,
+      "section": "Wells & MFs",
+      "text": "Gas Injection is on going for 21 Test Wells",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 6
+      },
+      "label": "LC No",
+      "line_no": 3,
+      "numeric_value": 22,
+      "section": "Wells & MFs",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 7
+      },
+      "label": "WD",
+      "line_no": 4,
+      "numeric_value": 2,
+      "section": "Wells & MFs",
+      "text": "Injection Press : 128 bar ; Inj Flow rate: 22.5 ton /h",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 8
+      },
+      "label": "LC A",
+      "line_no": 5,
+      "numeric_value": null,
+      "section": "Oil Treatment",
+      "text": "In Service ; S.C: 26.5 bar",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 9
+      },
+      "label": "LC B",
+      "line_no": 6,
+      "numeric_value": null,
+      "section": "Oil Treatment",
+      "text": "In Service",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 10
+      },
+      "label": "HC",
+      "line_no": 7,
+      "numeric_value": null,
+      "section": "Oil Treatment",
+      "text": "In Service ; S.C: 8.45 bar",
+      "unit": null
+    },
+    {
+      "extra": {
+        "covers": [
+          "Wells & MFs",
+          "Oil Treatment"
+        ],
+        "item_no": null,
+        "kind": "activity",
+        "row": 4
+      },
+      "label": "Activity",
+      "line_no": 8,
+      "numeric_value": null,
+      "section": "Wells & MFs",
+      "text": "S17 : Fully chokeup @16:30",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 11
+      },
+      "label": null,
+      "line_no": 9,
+      "numeric_value": null,
+      "section": "Gas Treatment",
+      "text": "In Service",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 14
+      },
+      "label": "HP flare stack drain volume@ 06:00 A.M.",
+      "line_no": 10,
+      "numeric_value": 200,
+      "section": "Utility Systems",
+      "text": "200 lits",
+      "unit": "lits"
+    },
+    {
+      "extra": {
+        "row": 15
+      },
+      "label": "LP flare stack drain volume@ 06:00 A.M.",
+      "line_no": 11,
+      "numeric_value": 0,
+      "section": "Utility Systems",
+      "text": "0",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 18
+      },
+      "label": null,
+      "line_no": 12,
+      "numeric_value": null,
+      "section": "Utility Systems",
+      "text": "In Service",
+      "unit": null
+    },
+    {
+      "extra": {
+        "covers": [
+          "Gas Treatment",
+          "Utility Systems"
+        ],
+        "item_no": 1,
+        "kind": "activity",
+        "row": 11
+      },
+      "label": "Activity",
+      "line_no": 13,
+      "numeric_value": null,
+      "section": "Gas Treatment",
+      "text": "UCP problem of C-0401B-12 was fixed .",
+      "unit": null
+    },
+    {
+      "extra": {
+        "covers": [
+          "Gas Treatment",
+          "Utility Systems"
+        ],
+        "item_no": 2,
+        "kind": "activity",
+        "row": 11
+      },
+      "label": "Activity",
+      "line_no": 14,
+      "numeric_value": null,
+      "section": "Gas Treatment",
+      "text": "Blinding of C-0102B-31 is ongoing .",
+      "unit": null
+    },
+    {
+      "extra": {
+        "covers": [
+          "Gas Treatment",
+          "Utility Systems"
+        ],
+        "item_no": 3,
+        "kind": "activity",
+        "row": 11
+      },
+      "label": "Activity",
+      "line_no": 15,
+      "numeric_value": null,
+      "section": "Gas Treatment",
+      "text": "Suction and discharge of light fast loop pump have been closed , due to leakage of PRV .",
+      "unit": null
+    },
+    {
+      "extra": {
+        "covers": [
+          "Gas Treatment",
+          "Utility Systems"
+        ],
+        "item_no": 4,
+        "kind": "activity",
+        "row": 11
+      },
+      "label": "Activity",
+      "line_no": 16,
+      "numeric_value": null,
+      "section": "Gas Treatment",
+      "text": "Chemical refill : Hypochlorite : 400 liter / Filter Aid : 200 liter .",
+      "unit": null
+    },
+    {
+      "extra": {
+        "covers": [
+          "Gas Treatment",
+          "Utility Systems"
+        ],
+        "item_no": 5,
+        "kind": "activity",
+        "row": 11
+      },
+      "label": "Activity",
+      "line_no": 17,
+      "numeric_value": null,
+      "section": "Gas Treatment",
+      "text": "CMS charging of PSA (A) was done .",
+      "unit": null
+    },
+    {
+      "extra": {
+        "covers": [
+          "Gas Treatment",
+          "Utility Systems"
+        ],
+        "item_no": 6,
+        "kind": "activity",
+        "row": 11
+      },
+      "label": "Activity",
+      "line_no": 18,
+      "numeric_value": null,
+      "section": "Gas Treatment",
+      "text": "Deep test of N2 package was done .",
+      "unit": null
+    },
+    {
+      "extra": {
+        "covers": [
+          "Gas Treatment",
+          "Utility Systems"
+        ],
+        "item_no": 7,
+        "kind": "activity",
+        "row": 11
+      },
+      "label": "Activity",
+      "line_no": 19,
+      "numeric_value": null,
+      "section": "Gas Treatment",
+      "text": "Electrical and mechanical PMR of P-0701A-50 was done .",
+      "unit": null
+    },
+    {
+      "extra": {
+        "covers": [
+          "Gas Treatment",
+          "Utility Systems"
+        ],
+        "item_no": 8,
+        "kind": "activity",
+        "row": 11
+      },
+      "label": "Activity",
+      "line_no": 20,
+      "numeric_value": null,
+      "section": "Gas Treatment",
+      "text": "Hydrant No.88 in work shop area is damage , valve is isolated .",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 20
+      },
+      "label": "GTG units in service (fuel type)",
+      "line_no": 21,
+      "numeric_value": null,
+      "section": "GTG & Power Plant",
+      "text": "Units 1 , 2 , 3 with FG",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 20
+      },
+      "label": "Available stand-by units",
+      "line_no": 22,
+      "numeric_value": null,
+      "section": "GTG & Power Plant",
+      "text": "Unit 5",
+      "unit": null
+    },
+    {
+      "extra": {
+        "covers": [
+          "GTG & Power Plant",
+          "Substations & UPS"
+        ],
+        "item_no": null,
+        "kind": "activity",
+        "row": 19
+      },
+      "label": "Activity",
+      "line_no": 23,
+      "numeric_value": null,
+      "section": "GTG & Power Plant",
+      "text": "GTG 4 is out of service.",
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Oil Tanks",
+        "row": 25
+      },
+      "label": "LC TK 501",
+      "line_no": 24,
+      "numeric_value": 26.9,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Water Tanks",
+        "row": 25
+      },
+      "label": "F W 901A",
+      "line_no": 25,
+      "numeric_value": 98.23,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Diesel Storage",
+        "row": 25
+      },
+      "label": "TK 901-61",
+      "line_no": 26,
+      "numeric_value": 83.2,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Oil Tanks",
+        "row": 26
+      },
+      "label": "LC TK 511",
+      "line_no": 27,
+      "numeric_value": 26,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Water Tanks",
+        "row": 26
+      },
+      "label": "F W 901B",
+      "line_no": 28,
+      "numeric_value": 98.61,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Oil Tanks",
+        "row": 27
+      },
+      "label": "HC TK502",
+      "line_no": 29,
+      "numeric_value": 19.3,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Water Tanks",
+        "row": 27
+      },
+      "label": "S W 701A",
+      "line_no": 30,
+      "numeric_value": 84,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Oil Tanks",
+        "row": 28
+      },
+      "label": "OFF Spec",
+      "line_no": 31,
+      "numeric_value": 0,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Water Tanks",
+        "row": 28
+      },
+      "label": "S W 701B",
+      "line_no": 32,
+      "numeric_value": 84.1,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Water Tanks",
+        "row": 29
+      },
+      "label": "P W 401A",
+      "line_no": 33,
+      "numeric_value": 54.1,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "group": "Water Tanks",
+        "row": 30
+      },
+      "label": "P W 401B",
+      "line_no": 34,
+      "numeric_value": 42.9,
+      "section": "Storage Tank Level",
+      "text": null,
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 34
+      },
+      "label": "CCR members",
+      "line_no": 35,
+      "numeric_value": null,
+      "section": "Crew",
+      "text": "A.One / B.Two / C.Three",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 35
+      },
+      "label": "Site members",
+      "line_no": 36,
+      "numeric_value": null,
+      "section": "Crew",
+      "text": "D.Four / E.Five",
+      "unit": null
+    },
+    {
+      "extra": {
+        "row": 36
+      },
+      "label": "Remark",
+      "line_no": 37,
+      "numeric_value": null,
+      "section": "Remark",
+      "text": "LC Export Rate 70,000 bbl/day & HC Export Rate 30,000 bbl/day.",
+      "unit": null
+    }
+  ],
+  "metrics": [
+    {
+      "equipment": "Wells & MFs",
+      "measured_at": null,
+      "metric": "HC No",
+      "unit": null,
+      "value": 25
+    },
+    {
+      "equipment": "Wells & MFs",
+      "measured_at": null,
+      "metric": "LC No",
+      "unit": null,
+      "value": 22
+    },
+    {
+      "equipment": "Wells & MFs",
+      "measured_at": null,
+      "metric": "WD",
+      "unit": null,
+      "value": 2
+    },
+    {
+      "equipment": "Wells & MFs",
+      "measured_at": null,
+      "metric": "Injection Press",
+      "unit": "bar",
+      "value": 128
+    },
+    {
+      "equipment": "Wells & MFs",
+      "measured_at": null,
+      "metric": "Inj Flow rate",
+      "unit": "ton /h",
+      "value": 22.5
+    },
+    {
+      "equipment": "LC A",
+      "measured_at": null,
+      "metric": "S.C",
+      "unit": "bar",
+      "value": 26.5
+    },
+    {
+      "equipment": "HC",
+      "measured_at": null,
+      "metric": "S.C",
+      "unit": "bar",
+      "value": 8.45
+    },
+    {
+      "equipment": "Utility Systems",
+      "measured_at": null,
+      "metric": "HP flare stack drain volume@ 06:00 A.M.",
+      "unit": "lits",
+      "value": 200
+    },
+    {
+      "equipment": "Utility Systems",
+      "measured_at": null,
+      "metric": "LP flare stack drain volume@ 06:00 A.M.",
+      "unit": null,
+      "value": 0
+    },
+    {
+      "equipment": "LC TK 501",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 26.9
+    },
+    {
+      "equipment": "F W 901A",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 98.23
+    },
+    {
+      "equipment": "TK 901-61",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 83.2
+    },
+    {
+      "equipment": "LC TK 511",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 26
+    },
+    {
+      "equipment": "F W 901B",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 98.61
+    },
+    {
+      "equipment": "HC TK502",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 19.3
+    },
+    {
+      "equipment": "S W 701A",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 84
+    },
+    {
+      "equipment": "OFF Spec",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 0
+    },
+    {
+      "equipment": "S W 701B",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 84.1
+    },
+    {
+      "equipment": "P W 401A",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 54.1
+    },
+    {
+      "equipment": "P W 401B",
+      "measured_at": null,
+      "metric": "tank level",
+      "unit": null,
+      "value": 42.9
+    },
+    {
+      "equipment": null,
+      "measured_at": null,
+      "metric": "LC Export Rate",
+      "unit": "bbl/day",
+      "value": 70000
+    },
+    {
+      "equipment": null,
+      "measured_at": null,
+      "metric": "HC Export Rate",
+      "unit": "bbl/day",
+      "value": 30000
+    }
+  ],
+  "report_date": "2099-01-07",
+  "report_type": "12H",
+  "shift": "Day",
+  "template_name": "ctep_shift_report",
+  "warnings": [
+    "date in the report (2098-01-07) differs from the document number / file name (2099-01-07); 2099-01-07 was used"
+  ]
+}
