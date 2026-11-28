@@ -94,7 +94,7 @@ class CtepShiftReport(Template):
     def _header_row(self, sheet: Sheet) -> int | None:
         for r, row in enumerate(sheet.rows[:15]):
             cells = [clean(v).lower() for v in row]
-            if cells and cells[0] == "production area" and "unit" in cells and "status" in cells:
+            if cells and cells[0] == "production area" and "status" in cells:
                 return r
         return None
 
@@ -124,8 +124,20 @@ class CtepShiftReport(Template):
 
         head = [clean(v).lower() for v in sheet.rows[hdr]]
         status_col = head.index("status")
-        activity_col = next((i for i, h in enumerate(head) if h.startswith("activity")), None)
         wr_col = next((i for i, h in enumerate(head) if "wr" in h and ("wo" in h or "status" in h)), None)
+        activity_col = next((i for i, h in enumerate(head) if h.startswith("activity")), None)
+        if activity_col is None:
+            # Recent workbooks label this merged narrative column "Section: CTEP Operation".
+            activity_col = next((i for i, h in enumerate(head) if h.startswith("section:")), None)
+        if activity_col is None:
+            # Some newer forms leave that header blank; the narrative column has the most text.
+            end = wr_col if wr_col is not None else len(head)
+            candidates = [i for i in range(status_col + 1, end) if not head[i]]
+            activity_col = max(
+                candidates,
+                key=lambda c: sum(len(clean(row[c])) for row in sheet.rows[hdr + 1:] if c < len(row)),
+                default=None,
+            )
         first = hdr + 1
         nxt = [clean(v).lower() for v in sheet.rows[first]] if first < sheet.n_rows else []
         if nxt and not nxt[0] and any(h in ("activity", "wr status") for h in nxt):  # sub-header row
@@ -165,9 +177,13 @@ class CtepShiftReport(Template):
         content = parse_date_ex(date_text, dayfirst=True)
         ident_date = ident_shift = None
         for source in (doc_no or "", wb.path.name):  # the document number first, then the file name
-            m = ID_IN_NAME.search(source) or re.search(r"(\d{8})([DN])\b", source)
+            m = ID_IN_NAME.search(source) or re.search(r"(?<!\d)(\d{8})([DN])\b", source)
             if m:
-                ident_date, ident_shift = dt.datetime.strptime(m.group(1), "%Y%m%d").date(), {"D": "Day", "N": "Night"}[m.group(2)]
+                try:
+                    ident_date = dt.datetime.strptime(m.group(1), "%Y%m%d").date()
+                except ValueError:
+                    continue  # malformed document number; try the file name next
+                ident_shift = {"D": "Day", "N": "Night"}[m.group(2)]
                 break
         rep.report_date = content.value
         if content.value is None and ident_date:
