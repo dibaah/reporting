@@ -138,11 +138,13 @@ def list_reports(session: Session, report_type: str | None = None, date_from: da
                  date_to: date | None = None, limit: int = 50, offset: int = 0) -> dict:
     limit = max(1, min(int(limit), MAX_LIMIT))
     q = (
-        select(Report.id, Report.report_date, Report.shift, ReportType.name.label("report_type"),
+        select(Report.id, Report.report_date, Report.shift, Report.header,
+               ReportType.name.label("report_type"), SourceFile.file_name,
                func.count(ReportLine.id).label("lines"))
         .join(ReportType, ReportType.id == Report.report_type_id)
+        .join(SourceFile, SourceFile.id == Report.source_file_id)
         .join(ReportLine, ReportLine.report_id == Report.id, isouter=True)
-        .group_by(Report.id, ReportType.name)
+        .group_by(Report.id, Report.header, ReportType.name, SourceFile.file_name)
         .order_by(Report.report_date.desc(), Report.id.desc())
         .limit(limit + 1).offset(max(0, int(offset)))
     )

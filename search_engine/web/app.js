@@ -18,10 +18,10 @@ function td(content, cls) {
   return c;
 }
 function htmlCell(html, cls) { const c = el("td", cls); c.innerHTML = html || ""; return c; }
-async function api(path, params = {}) {
+async function api(path, params = {}, options = {}) {
   const u = new URL(path, location.origin);
   Object.entries(params).forEach(([k, v]) => { if (v !== "" && v != null && v !== false) u.searchParams.set(k, v); });
-  const r = await fetch(u);
+  const r = await fetch(u, options);
   if (!r.ok) { let m = r.statusText; try { m = (await r.json()).detail || m; } catch (_) {} throw new Error(m); }
   return r.json();
 }
@@ -120,14 +120,25 @@ async function runSearch() {
 }
 
 async function runReports() {
-  const cols = ["Report", "Date", "Type", "Shift", "Lines"];
+  const cols = ["Doc Number", "Report Date", "Type", "Shift Interval", "Shift Supervisor", ""];
   setHead(cols);
   const page = await api("/api/reports", { type: state.type, from: state.from, to: state.to, limit: PAGE, offset: state.offset });
   const body = $("#table tbody"); body.replaceChildren();
   setStatus(page.reports.length ? "" : "No reports found for this selection.");
   page.reports.forEach(r => {
     const tr = el("tr", "clickable");
-    tr.append(td(el("span", "link", "#" + r.id)), td(fmtDate(r.report_date)), td(pill(r.report_type)), td(r.shift), td(String(r.lines), "num"));
+    const docNo = r.header?.doc_no || r.file_name?.replace(/\.[^.]+$/, "") || "";
+    tr.append(td(el("span", "link", docNo)), td(fmtDate(r.report_date)), td(pill(r.report_type)), td(r.shift), td(r.header?.supervisor || ""), td(""));
+    const remove = el("button", "btn danger", "Delete");
+    remove.type = "button";
+    remove.onclick = async e => {
+      e.stopPropagation();
+      if (!confirm(`Delete report ${docNo || r.report_date}? This removes it from the database; the source Excel file is kept.`)) return;
+      remove.disabled = true;
+      try { await api(`/api/reports/${r.id}`, {}, { method: "DELETE" }); await run(); }
+      catch (error) { setStatus("Could not delete report: " + error.message, true); remove.disabled = false; }
+    };
+    tr.lastElementChild.appendChild(remove);
     tr.onclick = () => openReport(r.id);
     body.appendChild(tr);
   });
@@ -149,9 +160,24 @@ async function openReport(id, hitLineId) {
     kv.hidden = kv.children.length === 0;
     const body = $("#dTable tbody");
     let hitRow = null;
-    r.lines.forEach(l => {
+    const sectionOrder = ["Oil Treatment", "Gas Treatment", "Utility Systems", "GTG & Power Plant", "Storage Tanks Levels", "Wells and MFs"];
+    const normalizeSection = value => {
+      const s = (value || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+      if (s.includes("oil treatment")) return "Oil Treatment";
+      if (s.includes("gas treatment")) return "Gas Treatment";
+      if (s.includes("utility system")) return "Utility Systems";
+      if (s.includes("gtg") || s.includes("power plant")) return "GTG & Power Plant";
+      if (s.includes("storage tank")) return "Storage Tanks Levels";
+      if (s.includes("well") || s.includes("mf")) return "Wells and MFs";
+      return value || "Other";
+    };
+    const lines = r.lines.filter(l => normalizeSection(l.section) !== "Crew").sort((a, b) => {
+      const ai = sectionOrder.indexOf(normalizeSection(a.section)); const bi = sectionOrder.indexOf(normalizeSection(b.section));
+      return (ai < 0 ? sectionOrder.length : ai) - (bi < 0 ? sectionOrder.length : bi) || a.line_no - b.line_no;
+    });
+    lines.forEach(l => {
       const tr = el("tr", l.id === hitLineId ? "hit" : "");
-      tr.append(td(String(l.line_no)), td(l.section), td(l.label), td(l.text), td(fmtNum(l.numeric_value), "num"), td(l.unit));
+      tr.append(td(normalizeSection(l.section)), td(l.label), td(l.text), td(fmtNum(l.numeric_value), "num"), td(l.unit));
       if (l.id === hitLineId) hitRow = tr;
       body.appendChild(tr);
     });

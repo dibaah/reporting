@@ -17,8 +17,10 @@ from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
+from sqlalchemy import delete, select
 
 from database.db import get_engine
+from database.models import AlertEvent, ExpectedReport, Report, ReportLine, ReportMetric
 
 from .service import (
     SearchFilters, get_context, get_report, get_report_types, get_stats, list_reports, search,
@@ -90,6 +92,22 @@ def api_report(report_id: int, s: Session = Depends(get_session)) -> dict:
     if rep is None:
         raise HTTPException(404, "report not found")
     return rep
+
+
+@app.delete("/api/reports/{report_id}")
+def api_delete_report(report_id: int, s: Session = Depends(get_session)) -> dict:
+    rep = s.get(Report, report_id)
+    if rep is None:
+        raise HTTPException(404, "report not found")
+    line_ids = select(ReportLine.id).where(ReportLine.report_id == report_id)
+    s.execute(delete(AlertEvent).where(AlertEvent.report_line_id.in_(line_ids)))
+    s.execute(delete(AlertEvent).where(AlertEvent.report_id == report_id))
+    s.execute(delete(ExpectedReport).where(ExpectedReport.received_report_id == report_id))
+    s.execute(delete(ReportMetric).where(ReportMetric.report_id == report_id))
+    s.execute(delete(ReportLine).where(ReportLine.report_id == report_id))
+    s.delete(rep)
+    s.commit()
+    return {"deleted": report_id}
 
 
 @app.get("/api/lines/{line_id}/context")

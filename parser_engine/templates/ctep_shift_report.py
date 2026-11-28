@@ -216,7 +216,6 @@ class CtepShiftReport(Template):
                 rep.header["supervisor"] = value
             elif key in ("ccr members", "site members"):
                 rep.header[key.replace(" ", "_")] = value
-                W.line("Crew", sheet.cell(r, 0), value, r)
             elif key == "remark":
                 W.line("Remark", "Remark", value, r)
                 for m in EXPORT_RATE.finditer(value):
