@@ -1,5 +1,6 @@
 """Phase 3: historical importer and Phase 0 inventory. Needs a migrated database and .env."""
 import csv
+import os
 import shutil
 from pathlib import Path
 
@@ -48,21 +49,24 @@ def archive(tmp_path):
 
 def _cleanup(root: Path):
     """The importer commits for real, so remove everything this test created."""
+    prefix = str(root) + os.sep
+    under_root = func.left(SourceFile.path, len(prefix)) == prefix
     with session_scope() as s:
-        ids = s.scalars(select(SourceFile.id).where(SourceFile.path.like(str(root.parent) + "%"))).all()
+        ids = s.scalars(select(SourceFile.id).where(under_root)).all()
         if ids:
             s.execute(delete(Report).where(Report.source_file_id.in_(ids)))
             s.execute(delete(SourceFile).where(SourceFile.id.in_(ids)))
         s.execute(delete(JobRun).where(JobRun.job_type == "historical_import",
-                                       JobRun.details["root"].astext.like(str(root.parent) + "%")))
+                                       JobRun.details["root"].astext == str(root)))
 
 
 def counts(root: Path) -> dict:
     with session_scope() as s:
-        like = SourceFile.path.like(str(root.parent) + "%")
-        ids = select(SourceFile.id).where(like)
+        prefix = str(root) + os.sep
+        under_root = func.left(SourceFile.path, len(prefix)) == prefix
+        ids = select(SourceFile.id).where(under_root)
         return {
-            "files": s.scalar(select(func.count()).select_from(SourceFile).where(like)),
+            "files": s.scalar(select(func.count()).select_from(SourceFile).where(under_root)),
             "reports": s.scalar(select(func.count()).select_from(Report).where(Report.source_file_id.in_(ids))),
             "lines": s.scalar(select(func.count()).select_from(ReportLine).join(Report).where(Report.source_file_id.in_(ids))),
             "raw": s.scalar(select(func.count()).select_from(RawCells).where(RawCells.source_file_id.in_(ids))),

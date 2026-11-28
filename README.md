@@ -2,10 +2,10 @@
 
 Internal assistant that imports operations reports (Excel, since 2013 plus new ones from
 Outlook), makes them searchable by keyword, and alerts on keywords in NEW reports only.
-Runs natively on Windows, no Docker. See the Master Plan v3 for all phases.
+Runs natively on Windows, no Docker. See the Master Plan v4 for all phases.
 
 ## Phase 1: Foundation (this state)
-PostgreSQL schema (13 tables), Alembic migration, seed data, shared Python DB layer, tests.
+PostgreSQL `report` schema (13 tables), Alembic migrations, seed data, shared Python DB layer, tests.
 
 ## Phase 2: Parser engine (this state)
 `parser_engine/` turns any report workbook into the standard structure (header, lines, metrics,
@@ -195,7 +195,7 @@ private on GitHub (Settings > General > Danger Zone > Change visibility) if you 
 ### Setup on Windows
 1. Install PostgreSQL 16 (include command line tools) and Python 3.12 (tick "Add to PATH").
 2. `.\deploy\create_database.ps1`  creates the database, two roles, and writes `.env`.
-3. `.\deploy\setup.ps1`  venv, dependencies, migrations, seed, tests.
+3. `setup.ps1` prepares the venv, dependencies, migrations and seed. Tests run only when `TEST_DATABASE_URL` points to a separate migrated test database.
 
 Run step 3 again after every update. Never commit `.env`, reports, backups or logs.
 

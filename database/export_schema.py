@@ -4,6 +4,7 @@ from pathlib import Path
 from database.models import Base
 
 out = ["# Database schema (generated)\n",
+       "All Report Intelligence tables live in the PostgreSQL `report` schema.\n",
        "Generated from `database/models.py`. Regenerate with `python -m database.export_schema`.\n"]
 for t in Base.metadata.sorted_tables:
     out.append(f"\n## {t.name}\n\n| Column | Type | Notes |\n|---|---|---|")

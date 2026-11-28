@@ -76,7 +76,7 @@ def search(session: Session, f: SearchFilters, limit: int = 50, offset: int = 0)
     offset = max(0, int(offset))
     rows = session.execute(
         text(
-            "SELECT * FROM search_report_lines("
+            "SELECT * FROM report.search_report_lines("
             "CAST(:q AS text), CAST(:mode AS text), CAST(:rt AS text), CAST(:df AS date), "
             "CAST(:dt AS date), CAST(:eq AS text), :lim, :off)"
         ),

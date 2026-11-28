@@ -17,9 +17,9 @@ EXPECTED_TABLES = {
 
 
 def test_all_tables_exist():
-    existing = set(inspect(get_engine()).get_table_names())
+    existing = set(inspect(get_engine()).get_table_names(schema="report"))
     assert EXPECTED_TABLES <= existing
-    assert EXPECTED_TABLES == set(Base.metadata.tables)
+    assert EXPECTED_TABLES == {table.name for table in Base.metadata.tables.values()}
 
 
 def test_seed_is_idempotent():
@@ -74,4 +74,4 @@ def test_check_constraints():
 def test_runtime_user_cannot_change_schema():
     with pytest.raises(DBAPIError):
         with get_engine().begin() as c:
-            c.execute(text("create table should_fail (id int)"))
+            c.execute(text("create table report.should_fail (id int)"))

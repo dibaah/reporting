@@ -33,5 +33,9 @@ if (-not (Test-Path $py)) { Invoke-Step "Create virtual environment" { python -m
 Invoke-Step "Install dependencies" { & $py -m pip install --quiet --upgrade pip; & $py -m pip install --quiet -r requirements.txt }
 Invoke-Step "Apply database migrations" { & $py -m alembic upgrade head }
 Invoke-Step "Seed report types and default settings" { & $py -m database.seed }
-Invoke-Step "Run Phase 1 tests" { & $py -m pytest -q tests }
+if ($env:TEST_DATABASE_URL) {
+    Invoke-Step "Run tests against TEST_DATABASE_URL" { & $py -m pytest -q tests }
+} else {
+    Write-Warning "Tests skipped to protect the configured database. Set TEST_DATABASE_URL to a separate test database to run them."
+}
 Write-Host "Phase 1 foundation is ready." -ForegroundColor Green

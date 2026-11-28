@@ -14,7 +14,7 @@ This is a proposal. It must be checked against the real AIMS code (see the quest
 | Part | Technology | Role |
 |---|---|---|
 | Importers, alert engine, backup | Python workers | Fill the database. Not plugins. They run as services/scheduled tasks |
-| Database | PostgreSQL | Report data, search function `search_report_lines` |
+| Database | PostgreSQL | Report data in the `report` schema |
 | Host | ASP.NET Core | Login, roles, shared layout and theme, menu, plugin loading, home page with cards |
 | Report plugin | .NET Razor Class Library | Pages that read the database (search function + EF models) |
 | FCR plugin | .NET Razor Class Library | The existing FCR pages and its own database |
@@ -47,9 +47,9 @@ filter bar, table with sticky header, side drawer for one report.
 
 ## What the Report plugin calls
 1. SQL function (single source of truth for search, same result in Python and .NET):
-   `SELECT * FROM search_report_lines(query, mode, report_type, date_from, date_to, equipment, limit, offset)`
+   `SELECT * FROM report.search_report_lines(query, mode, report_type, date_from, date_to, equipment, limit, offset)`
    `mode` is `fulltext` (whole words and tags) or `partial` (substrings and typos).
-2. Normal EF Core entities for reports, report_lines, keyword_rules, alert_events, app_settings
+2. Normal EF Core entities in the `report` schema for reports, report_lines, keyword_rules, alert_events, app_settings
    (scaffolded from the database; Python owns the schema until the host exists).
 3. The JSON endpoints in `search_engine/api.py` document the shapes the pages need:
    `/api/search`, `/api/reports`, `/api/reports/{id}`, `/api/lines/{id}/context`, `/api/stats`,

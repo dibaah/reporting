@@ -19,6 +19,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    MetaData,
     Numeric,
     String,
     Text,
@@ -31,7 +32,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 class Base(DeclarativeBase):
-    pass
+    metadata = MetaData(schema="report")
 
 
 def _ts() -> Mapped[datetime]:

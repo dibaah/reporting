@@ -14,9 +14,10 @@ GRANT CONNECT ON DATABASE report_intel TO report_app;
 -- pg_trgm ships with PostgreSQL (contrib). Created here because it needs superuser.
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
-GRANT USAGE ON SCHEMA public TO report_app;
--- Tables created later by report_owner automatically become usable by report_app.
-ALTER DEFAULT PRIVILEGES FOR ROLE report_owner IN SCHEMA public
+CREATE SCHEMA report AUTHORIZATION report_owner;
+GRANT USAGE ON SCHEMA report TO report_app;
+-- The schema migration grants current objects; these defaults cover later objects.
+ALTER DEFAULT PRIVILEGES FOR ROLE report_owner IN SCHEMA report
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO report_app;
-ALTER DEFAULT PRIVILEGES FOR ROLE report_owner IN SCHEMA public
+ALTER DEFAULT PRIVILEGES FOR ROLE report_owner IN SCHEMA report
     GRANT USAGE, SELECT ON SEQUENCES TO report_app;

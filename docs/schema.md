@@ -1,5 +1,7 @@
 # Database schema (generated)
 
+All Report Intelligence tables live in the PostgreSQL `report` schema.
+
 Generated from `database/models.py`. Regenerate with `python -m database.export_schema`.
 
 
@@ -60,6 +62,7 @@ Generated from `database/models.py`. Regenerate with `python -m database.export_
 | status | VARCHAR(10) | required |
 | received_at | DATETIME |  |
 | ingested_at | DATETIME | required |
+| alert_scanned_at | DATETIME |  |
 
 ## failed_parse_queue
 
@@ -73,6 +76,7 @@ Generated from `database/models.py`. Regenerate with `python -m database.export_
 | resolved | BOOLEAN | required |
 | created_at | DATETIME | required |
 | last_attempt_at | DATETIME |  |
+| notified_at | DATETIME |  |
 
 ## raw_cells
 
@@ -168,3 +172,5 @@ Generated from `database/models.py`. Regenerate with `python -m database.export_
 | sent_at | DATETIME |  |
 | acknowledged_at | DATETIME |  |
 | action_note | TEXT |  |
+| repeat_key | VARCHAR(64) |  |
+| repeat_count | INTEGER | required |
